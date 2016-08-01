@@ -1,0 +1,22 @@
+---
+- name: update homebrew
+  command: brew update
+- name: allow gnu dups
+  command: brew tap homebrew/dupes
+- name: install coreutils
+  homebrew: name=coreutils state=present
+- name: overwrite osx utils with gnu
+  homebrew: name={{item}} state=present install_options=with-default-names
+  with_items: 
+    - findutils
+    - gnu-sed
+    - gnu-tar
+    - gnu-which
+    - grep 
+- name: add other unix goodies
+  homebrew: name={{item}} state=present
+  with_items:
+    - tmux
+    - watch
+    - gawk
+    - gzip
