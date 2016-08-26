@@ -1,0 +1,22 @@
+---
+- name: install rbenv/ruby-build
+  homebrew: name={{item}} state=present
+  with_items:
+    - rbenv
+    - ruby-build
+- name: add rbenv init command to .bashrc
+  lineinfile: dest=~/.bashrc line="eval \"$(rbenv init -)\""
+- name: install ruby
+  command: rbenv install {{ruby_version}}
+  register: command_result
+  failed_when: "'already exists' not in command_result.stderr"
+  changed_when: "'already exists' not in command_result.stderr"
+- name: set default ruby version
+  lineinfile: dest=~/.bashrc line="export RBENV_VERSION={{ruby_version}}"
+- name: install rails
+  gem: name=rails version={{rails_version}} 
+  environment:
+    RBENV_VERSION: "{{ruby_version}}"
+- name: update rbenv known gems  
+  command: rbenv rehash
+

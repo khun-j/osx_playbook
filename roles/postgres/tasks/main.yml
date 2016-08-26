@@ -1,0 +1,10 @@
+---
+- name: install postgres
+  homebrew: name=postgres state=present
+- name: install psycopg2 dep
+  pip: name=psycopg2 state=present
+  become: true 
+- name: start postgres daemon and add to init
+  command: brew services start postgresql
+- name: create default db
+  postgresql_db: name={{ansible_user}} login_user={{ansible_user}}

@@ -4,5 +4,6 @@
     - unix
     - homebrew
     - rails
+    - postgres
     - node
     - docker
